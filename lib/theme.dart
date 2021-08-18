@@ -15,6 +15,12 @@ ThemeData lightThemeData(BuildContext context) {
       secondary: kSecondaryColor,
       error: kErrorColor,
     ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: Colors.white,
+      selectedItemColor: kContentColorLightTheme.withOpacity(0.7),
+      unselectedItemColor: kContentColorDarkTheme.withOpacity(0.32),
+      selectedIconTheme: IconThemeData(color: kPrimaryColor),
+    ),
   );
 }
 
