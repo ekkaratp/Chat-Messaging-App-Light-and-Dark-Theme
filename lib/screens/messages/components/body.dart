@@ -1,4 +1,8 @@
 import 'package:chat/constants.dart';
+import 'package:chat/models/ChatMessage.dart';
+import 'package:chat/screens/messages/components/audio_message.dart';
+import 'package:chat/screens/messages/components/chat_input_field.dart';
+import 'package:chat/screens/messages/components/text_message.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
@@ -6,39 +10,83 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Spacer(),
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: kDefaultPadding,
-            vertical: kDefaultPadding / 2,
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          child: SafeArea(
-            child: Row(
-              children: [
-                Icon(
-                  Icons.mic,
-                  color: kPrimaryColor,
-                ),
-                SizedBox(
-                  width: kDefaultPadding,
-                ),
-                Expanded(
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: kPrimaryColor.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                  ),
-                ),
-              ],
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: ListView.builder(
+              itemCount: demeChatMessages.length,
+              itemBuilder: (context, index) => Message(
+                message: demeChatMessages[index],
+              ),
             ),
           ),
         ),
+        ChatInputField(),
       ],
+    );
+  }
+}
+
+class Message extends StatelessWidget {
+  final ChatMessage message;
+  const Message({
+    Key key,
+    @required this.message,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Widget messageContaint(ChatMessage message) {
+      switch (message.messageType) {
+        case ChatMessageType.text:
+          return TextMessage(
+            message: message,
+          );
+          break;
+        case ChatMessageType.audio:
+          return AudioMessage(
+            message: message,
+          );
+          break;
+        case ChatMessageType.video:
+          return VideoMessage();
+          break;
+        default:
+          return SizedBox();
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: kDefaultPadding,
+      ),
+      child: Row(
+        mainAxisAlignment:
+            message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          if (!message.isSender) ...[
+            CircleAvatar(
+              radius: 12,
+              backgroundImage: AssetImage('assets/images/user_2.png'),
+            ),
+            SizedBox(
+              width: kDefaultPadding / 2,
+            ),
+          ],
+          messageContaint(message),
+        ],
+      ),
+    );
+  }
+}
+
+class VideoMessage extends StatelessWidget {
+  const VideoMessage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: null,
     );
   }
 }
