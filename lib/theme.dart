@@ -18,7 +18,7 @@ ThemeData lightThemeData(BuildContext context) {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
       selectedItemColor: kContentColorLightTheme.withOpacity(0.7),
-      unselectedItemColor: kContentColorDarkTheme.withOpacity(0.32),
+      unselectedItemColor: kContentColorLightTheme.withOpacity(0.32),
       selectedIconTheme: IconThemeData(color: kPrimaryColor),
     ),
   );
